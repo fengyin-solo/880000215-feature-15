@@ -1,5 +1,5 @@
 <script setup>
-import { riskMeta } from '../../utils/restorationFormatters'
+import { riskMeta, stageMeta } from '../../utils/restorationFormatters'
 
 defineProps({
   rows: {
@@ -24,7 +24,9 @@ defineProps({
       class="task-row"
     >
       <span>{{ row.title }}</span>
-      <span>{{ row.stage }}</span>
+      <span :class="['stage-tag', `stage-tag--${stageMeta(row.stage).tone}`]">
+        {{ stageMeta(row.stage).label }}
+      </span>
       <span :class="['risk-tag', `risk-tag--${riskMeta(row.risk).tone}`]">
         {{ riskMeta(row.risk).label }}
       </span>
@@ -68,6 +70,36 @@ defineProps({
   width: fit-content;
   padding: 6px 10px;
   border-radius: 999px;
+}
+
+.stage-tag {
+  display: inline-flex;
+  justify-content: center;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+
+.stage-tag--pending {
+  background: #f6e5b9;
+  color: #8b6314;
+}
+
+.stage-tag--staged {
+  background: #dde6ef;
+  color: #34506f;
+}
+
+.stage-tag--archived {
+  background: #d9ead9;
+  color: #366338;
+}
+
+.stage-tag--work,
+.stage-tag--neutral {
+  background: #ece3d1;
+  color: #6a5439;
 }
 
 .risk-tag--high {
