@@ -1,5 +1,5 @@
 <script setup>
-import { riskMeta } from '../../utils/restorationFormatters'
+import { archiveStatusMeta, riskMeta } from '../../utils/restorationFormatters'
 
 defineProps({
   rows: {
@@ -16,6 +16,8 @@ defineProps({
       <span>阶段</span>
       <span>风险</span>
       <span>负责人</span>
+      <span>归档状态</span>
+      <span>盒号</span>
       <span>说明</span>
     </div>
     <div
@@ -29,6 +31,12 @@ defineProps({
         {{ riskMeta(row.risk).label }}
       </span>
       <span>{{ row.owner }}</span>
+      <span
+        :class="['archive-tag', `archive-tag--${archiveStatusMeta(row.archiveStatus).tone}`]"
+      >
+        {{ archiveStatusMeta(row.archiveStatus).label }}
+      </span>
+      <span>{{ row.boxNo || '待分配' }}</span>
       <span>{{ row.note }}</span>
     </div>
   </div>
@@ -43,7 +51,7 @@ defineProps({
 
 .task-row {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr 0.6fr 0.7fr 1.3fr;
+  grid-template-columns: 1.1fr 0.7fr 0.5fr 0.6fr 0.8fr 0.7fr 1.2fr;
   gap: 12px;
   align-items: center;
   padding: 14px 16px;
@@ -85,13 +93,36 @@ defineProps({
   color: #366338;
 }
 
+.archive-tag {
+  display: inline-flex;
+  justify-content: center;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.archive-tag--pending {
+  background: #f6e5b9;
+  color: #8b6314;
+}
+
+.archive-tag--staged {
+  background: #d9e5e0;
+  color: #2f5d50;
+}
+
+.archive-tag--completed {
+  background: #d9ead9;
+  color: #366338;
+}
+
 @media (max-width: 900px) {
   .task-table {
     overflow-x: auto;
   }
 
   .task-row {
-    min-width: 780px;
+    min-width: 960px;
   }
 }
 </style>

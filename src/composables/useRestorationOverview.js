@@ -3,16 +3,20 @@ import { computed } from 'vue'
 import {
   restorationBatches,
   restorationEnvironment,
-  restorationTasks,
 } from '../data/restorationData'
+import { useRestorationStore } from './useRestorationStore'
 
 export function useRestorationOverview() {
+  const { tasks } = useRestorationStore()
+
   const batchCount = computed(() => restorationBatches.length)
   const highRiskCount = computed(
-    () => restorationTasks.filter((item) => item.risk === 'high').length,
+    () => tasks.value.filter((item) => item.risk === 'high').length,
   )
   const environmentCount = computed(() => restorationEnvironment.length)
-  const ownerCount = computed(() => new Set(restorationTasks.map((item) => item.owner)).size)
+  const ownerCount = computed(
+    () => new Set(tasks.value.map((item) => item.owner)).size,
+  )
 
   return {
     batchCount,
